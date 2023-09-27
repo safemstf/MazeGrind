@@ -34,6 +34,7 @@ class Test(Enum):
 
 test = Test.SARSA_ELIGIBILITY  # which test to run
 maze_number = random.randint(0, 999)  # maze randomizer
+print("Maze Number: ", maze_number)
 
 maze = np.array(
     data['mazes'][maze_number]
@@ -75,10 +76,16 @@ if test == Test.SARSA:
 
 # train using tabular SARSA learning and an eligibility trace
 if test == Test.SARSA_ELIGIBILITY:
-    game.render(Render.TRAINING)  # shows all moves and the q table; nice but slow.
+    # Initially, do not render.
     model = models.SarsaTableTraceModel(game)
-    h, w, _, _ = model.train(discount=0.90, exploration_rate=0.10, learning_rate=0.10, episodes=200,
-                             stop_at_convergence=True)
+    for episode in range(400):  # or whatever your total number of episodes is
+        h, w, _, _, = model.train(
+            discount=0.90, exploration_rate=0.10, learning_rate=0.10,
+            stop_at_convergence=True
+        )
+        # Now, check the episode number and decide whether to render.
+        if episode > 150:
+            game.render(Render.TRAINING)
 
 # train using a neural network with experience replay (also saves the resulting model)
 if test == Test.DEEP_Q:

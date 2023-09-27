@@ -45,11 +45,11 @@ class SarsaTableTraceModel(AbstractModel):
             :keyword int episodes: number of training games to play
             :return int, datetime: number of training episodes, total time spent
         """
-        discount = kwargs.get("discount", 0.90)
-        exploration_rate = kwargs.get("exploration_rate", 0.10)
-        exploration_decay = kwargs.get("exploration_decay", 0.99)  # % reduction per step = 100 - exploration decay
-        learning_rate = kwargs.get("learning_rate", 0.10)
-        eligibility_decay = kwargs.get("eligibility_decay", 0.90)  # 0.80 = 20% reduction
+        discount = kwargs.get("discount", 0.999)
+        exploration_rate = kwargs.get("exploration_rate", 0.8)
+        exploration_decay = kwargs.get("exploration_decay", 0.999999)  # % reduction per step = 100 - exploration decay
+        learning_rate = kwargs.get("learning_rate", 0.999999)
+        eligibility_decay = kwargs.get("eligibility_decay", 0.4)  # 0.80 = 20% reduction
         episodes = max(kwargs.get("episodes", 1000), 1)
         check_convergence_every = kwargs.get("check_convergence_every", self.default_check_convergence_every)
 
@@ -65,7 +65,39 @@ class SarsaTableTraceModel(AbstractModel):
         for episode in range(1, episodes + 1):
             # optimization: make sure to start training from all possible cells
             if not start_list:
-                start_list = self.environment.empty.copy()
+                # Get all empty cells
+                empty_cells = self.environment.empty.copy()
+
+                # Divide the empty cells into four quadrants
+                quadrant1, quadrant2, quadrant3, quadrant4 = [], [], [], []
+                max_row = max(cell[0] for cell in empty_cells)
+                max_col = max(cell[1] for cell in empty_cells)
+                for cell in empty_cells:
+                    i, j = cell
+                    if i <= max_row // 2 and j <= max_col // 2:
+                        quadrant1.append((i, j))
+                    elif i <= max_row // 2 and j > max_col // 2:
+                        quadrant2.append((i, j))
+                    elif i > max_row // 2 and j <= max_col // 2:
+                        quadrant3.append((i, j))
+                    else:
+                        quadrant4.append((i, j))
+
+                # Select the quadrant based on the current episode number
+                if episode <= 30:  # First 20 moves in the 4th quadrant
+                    start_list = quadrant4.copy()
+                elif 31 <= episode <= 60:
+                    quadrants4and2 = quadrant4 + quadrant2
+                    start_list = quadrants4and2.copy()
+                elif 61 <= episode <= 90:
+                    quadrants23and4 = quadrant4 + quadrant3 + quadrant2
+                    start_list = quadrants23and4.copy()
+                elif 91 <= episode <= 120:
+                    start_list = quadrant1.copy()
+                else:
+                    all_quadrants = quadrant1 + quadrant2 + quadrant3 + quadrant4
+                    start_list = all_quadrants.copy()
+
             start_cell = random.choice(start_list)
             start_list.remove(start_cell)
 
@@ -111,7 +143,7 @@ class SarsaTableTraceModel(AbstractModel):
                 state = next_state
                 action = next_action  # SARSA is on-policy: always follow the predicted action
 
-                self.environment.render_q(self)
+                #self.environment.render_q(self)
 
             cumulative_reward_history.append(cumulative_reward)
 
@@ -148,6 +180,7 @@ class SarsaTableTraceModel(AbstractModel):
             :return int: selected action
         """
         q = self.q(state)
+        #print(self.q(state))
 
         logging.debug("q[] = {}".format(q))
 
