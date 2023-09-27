@@ -55,7 +55,7 @@ class Maze:
     penalty_visited = -0.25  # penalty for returning to a cell which was visited earlier
     penalty_impossible_move = -0.75  # penalty for trying to enter an occupied cell or moving out of the maze
 
-    def __init__(self, maze, start_cell=(0, 0), exit_cell=None):
+    def __init__(self, maze, start_cell=(0, 1), exit_cell=None):
         """ Create a new maze game.
 
             :param numpy.array maze: 2D array containing empty cells (= 0) and cells occupied with walls (= 1)
@@ -69,7 +69,7 @@ class Maze:
         nrows, ncols = self.maze.shape
         self.cells = [(col, row) for col in range(ncols) for row in range(nrows)]
         self.empty = [(col, row) for col in range(ncols) for row in range(nrows) if self.maze[row, col] == Cell.EMPTY]
-        self.__exit_cell = (ncols - 1, nrows - 1) if exit_cell is None else exit_cell
+        self.__exit_cell = (ncols - 1, nrows - 2) if exit_cell is None else exit_cell
         self.empty.remove(self.__exit_cell)
 
         # Check for impossible maze layout
@@ -85,7 +85,7 @@ class Maze:
 
         self.reset(start_cell)
 
-    def reset(self, start_cell=(0, 0)):
+    def reset(self, start_cell=(0, 1)):
         """ Reset the maze to its initial state and place the agent at start_cell.
 
             :param tuple start_cell: here the agent starts its journey through the maze (optional, else upper left)
@@ -255,7 +255,7 @@ class Maze:
         """
         return np.array([[*self.__current_cell]])
 
-    def play(self, model, start_cell=(0, 0)):
+    def play(self, model, start_cell=(0, 1)):
         """ Play a single game, choosing the next move based a prediction from 'model'.
 
             :param class AbstractModel model: the prediction model to use

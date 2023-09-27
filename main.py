@@ -5,11 +5,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 import models
+
+import json
+import random
+
 from environment.maze import Maze, Render
 
 logging.basicConfig(format="%(levelname)-8s: %(asctime)s: %(message)s",
                     datefmt="%Y-%m-%d %H:%M:%S",
                     level=logging.INFO)  # Only show messages *equal to or above* this level
+
+with open('MazeList.json', 'r') as file:
+    data = json.load(file)
 
 
 class Test(Enum):
@@ -26,17 +33,11 @@ class Test(Enum):
 
 
 test = Test.SARSA_ELIGIBILITY  # which test to run
+maze_number = random.randint(0, 999)  # maze randomizer
 
-maze = np.array([
-    [0, 1, 0, 0, 0, 0, 0, 0],
-    [0, 1, 0, 1, 0, 1, 0, 0],
-    [0, 0, 0, 1, 1, 0, 1, 0],
-    [0, 1, 0, 1, 0, 0, 0, 0],
-    [1, 0, 0, 1, 0, 1, 0, 0],
-    [0, 0, 0, 1, 0, 1, 1, 1],
-    [0, 1, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 1, 0, 0]
-])  # 0 = free, 1 = occupied
+maze = np.array(
+    data['mazes'][maze_number]
+)  # 0 = free, 1 = occupied
 
 game = Maze(maze)
 
@@ -49,7 +50,7 @@ if test == Test.SHOW_MAZE_ONLY:
 if test == Test.RANDOM_MODEL:
     game.render(Render.MOVES)
     model = models.RandomModel(game)
-    game.play(model, start_cell=(0, 0))
+    game.play(model, start_cell=(0, 1))
 
 # train using tabular Q-learning
 if test == Test.Q_LEARNING:
