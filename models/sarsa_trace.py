@@ -47,7 +47,7 @@ class SarsaTableTraceModel(AbstractModel):
         """
         discount = kwargs.get("discount", 0.999)
         exploration_rate = kwargs.get("exploration_rate", 0.8)
-        exploration_decay = kwargs.get("exploration_decay", 0.999999)  # % reduction per step = 100 - exploration decay
+        exploration_decay = kwargs.get("exploration_decay", 0.999)  # % reduction per step = 100 - exploration decay
         learning_rate = kwargs.get("learning_rate", 0.999999)
         eligibility_decay = kwargs.get("eligibility_decay", 0.4)  # 0.80 = 20% reduction
         episodes = max(kwargs.get("episodes", 1000), 1)
@@ -84,19 +84,24 @@ class SarsaTableTraceModel(AbstractModel):
                         quadrant4.append((i, j))
 
                 # Select the quadrant based on the current episode number
-                if episode <= 30:  # First 20 moves in the 4th quadrant
+                if episode <= 15:  # First 20 moves in the 4th quadrant
                     start_list = quadrant4.copy()
-                elif 31 <= episode <= 60:
+                    print("Q4")
+                elif 31 <= episode <= 40:
                     quadrants4and2 = quadrant4 + quadrant2
                     start_list = quadrants4and2.copy()
-                elif 61 <= episode <= 90:
+                    print("Q4+2")
+                elif 61 <= episode <= 70:
                     quadrants23and4 = quadrant4 + quadrant3 + quadrant2
                     start_list = quadrants23and4.copy()
-                elif 91 <= episode <= 120:
+                    print("Q43+2")
+                elif 91 <= episode <= 100:
                     start_list = quadrant1.copy()
+                    print("Q1")
                 else:
                     all_quadrants = quadrant1 + quadrant2 + quadrant3 + quadrant4
                     start_list = all_quadrants.copy()
+                    print("Q ALL")
 
             start_cell = random.choice(start_list)
             start_list.remove(start_cell)
@@ -143,7 +148,8 @@ class SarsaTableTraceModel(AbstractModel):
                 state = next_state
                 action = next_action  # SARSA is on-policy: always follow the predicted action
 
-                #self.environment.render_q(self)
+                # self.environment.render_q(self)
+                # commented out for speed!!!!!!!
 
             cumulative_reward_history.append(cumulative_reward)
 
@@ -180,7 +186,7 @@ class SarsaTableTraceModel(AbstractModel):
             :return int: selected action
         """
         q = self.q(state)
-        #print(self.q(state))
+       # print(self.q(state))
 
         logging.debug("q[] = {}".format(q))
 
