@@ -22,6 +22,7 @@ class Render(Enum):
     NOTHING = 0
     TRAINING = 1
     MOVES = 2
+    ZeroVision = 3
 
 
 class Status(Enum):
@@ -123,6 +124,8 @@ class Maze:
 
     def __draw(self):
         """ Draw a line from the agents previous cell to its current cell. """
+        if self.__render == Render.ZeroVision:
+            return
         self.__ax1.plot(*zip(*[self.__previous_cell, self.__current_cell]), "bo-")  # previous cells are blue dots
         self.__ax1.plot(*self.__current_cell, "ro")  # current cell is a red dot
         self.__ax1.get_figure().canvas.draw()
@@ -152,6 +155,10 @@ class Maze:
             if self.__ax1 is None:
                 fig, self.__ax1 = plt.subplots(1, 1, tight_layout=True)
                 fig.canvas.set_window_title("Maze")
+
+        if self.__render == Render.ZeroVision:
+            # Simply return to avoid rendering.
+            return
 
         plt.show(block=False)
 

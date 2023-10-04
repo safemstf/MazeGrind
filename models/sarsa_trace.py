@@ -5,6 +5,7 @@ from datetime import datetime
 import numpy as np
 
 from environment import Status
+from environment.maze import Render
 from models import AbstractModel
 
 
@@ -31,6 +32,27 @@ class SarsaTableTraceModel(AbstractModel):
         super().__init__(game, name="SarsaTableTraceModel", **kwargs)
         self.Q = dict()  # table with Q per (state, action) combination
 
+    def Divide_quadrants(self):
+        """ Divide the maze into four quadrants. """
+        empty_cells = self.environment.empty.copy()
+
+        # Divide the empty cells into four quadrants
+        quadrant1, quadrant2, quadrant3, quadrant4 = [], [], [], []
+        max_row = max(cell[0] for cell in empty_cells)
+        max_col = max(cell[1] for cell in empty_cells)
+        for cell in empty_cells:
+            i, j = cell
+            if i <= max_row // 2 and j <= max_col // 2:
+                quadrant1.append((i, j))
+            elif i <= max_row // 2 and j > max_col // 2:
+                quadrant2.append((i, j))
+            elif i > max_row // 2 and j <= max_col // 2:
+                quadrant3.append((i, j))
+            else:
+                quadrant4.append((i, j))
+
+        return quadrant1, quadrant2, quadrant3, quadrant4
+
     def train(self, stop_at_convergence=False, **kwargs):
         """ Train the model.
 
@@ -46,7 +68,7 @@ class SarsaTableTraceModel(AbstractModel):
             :return int, datetime: number of training episodes, total time spent
         """
         discount = kwargs.get("discount", 0.999)
-        exploration_rate = kwargs.get("exploration_rate", 0.8)
+        exploration_rate = kwargs.get("exploration_rate", 0.9)
         exploration_decay = kwargs.get("exploration_decay", 0.999)  # % reduction per step = 100 - exploration decay
         learning_rate = kwargs.get("learning_rate", 0.999)
         eligibility_decay = kwargs.get("eligibility_decay", 0.4)  # 0.80 = 20% reduction
@@ -65,45 +87,34 @@ class SarsaTableTraceModel(AbstractModel):
         for episode in range(1, episodes + 1):
             # optimization: make sure to start training from all possible cells
             quadrant_cycle_length = 25
-            current_cycle = (episode - 1) // quadrant_cycle_length
-            if not start_list:
-                # Get all empty cells
-                empty_cells = self.environment.empty.copy()
-
-                # Divide the empty cells into four quadrants
-                quadrant1, quadrant2, quadrant3, quadrant4 = [], [], [], []
-                max_row = max(cell[0] for cell in empty_cells)
-                max_col = max(cell[1] for cell in empty_cells)
-                for cell in empty_cells:
-                    i, j = cell
-                    if i <= max_row // 2 and j <= max_col // 2:
-                        quadrant1.append((i, j))
-                    elif i <= max_row // 2 and j > max_col // 2:
-                        quadrant2.append((i, j))
-                    elif i > max_row // 2 and j <= max_col // 2:
-                        quadrant3.append((i, j))
-                    else:
-                        quadrant4.append((i, j))
+            current_cycle = (episode - 1) // quadrant_cycle_length % 5
+            # Get Quadrants
+            quadrant1, quadrant2, quadrant3, quadrant4 = self.Divide_quadrants()
 
             # Select the quadrant based on the current episode number
-                if current_cycle == 3:
-                    start_list = quadrant4.copy()
-                    print("Q4")
-                elif current_cycle == 1:
-                    quadrant2 = quadrant2
-                    start_list = quadrant2.copy()
-                    print("Q2")
-                elif current_cycle == 2:
-                    quadrant3 = quadrant3
-                    start_list = quadrant3.copy()
-                    print("Q3")
-                elif current_cycle == 0:
-                    start_list = quadrant1.copy()
-                    print("Q1")
-                elif episode > 100:
-                    all_quadrants = quadrant1 + quadrant2 + quadrant3 + quadrant4
-                    start_list = all_quadrants.copy()
-                    print("Q ALL")
+            if current_cycle == 0:
+                start_list = quadrant4.copy()
+                print("Q4")
+            elif current_cycle == 1:
+                quadrant2 = quadrant2
+                start_list = quadrant2.copy()
+                print("Q2")
+            elif current_cycle == 2:
+                quadrant3 = quadrant3
+                start_list = quadrant3.copy()
+                print("Q3")
+            elif current_cycle == 3:
+                start_list = quadrant1.copy()
+                print("Q1")
+            elif current_cycle == 4:
+                all_quadrants = quadrant1 + quadrant2 + quadrant3 + quadrant4
+                start_list = all_quadrants.copy()
+                print("Q ALL")
+
+            if episode < 345:  # change when rendering happens
+                self.environment.render(content=Render.ZeroVision)
+            else:
+                self.environment.render(content=Render.TRAINING)
 
             start_cell = random.choice(start_list)
             start_list.remove(start_cell)
@@ -150,7 +161,7 @@ class SarsaTableTraceModel(AbstractModel):
                 state = next_state
                 action = next_action  # SARSA is on-policy: always follow the predicted action
 
-                # self.environment.render_q(self)
+                self.environment.render_q(self)
                 # commented out for speed!!!!!!!
 
             cumulative_reward_history.append(cumulative_reward)
