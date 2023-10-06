@@ -18,7 +18,7 @@ def generate_grid_from_csv(filename, maze_number):
 
 
 filename = "optimal_actions.csv"
-maze_number = 22
+maze_number = 6
 grid = generate_grid_from_csv(filename, maze_number)
 
 # Print the grid to terminal
