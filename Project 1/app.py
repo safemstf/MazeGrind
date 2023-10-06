@@ -16,7 +16,7 @@ def convert_maze_to_list(maze):
 
 @app.route('/')
 def display_maze():
-    maze_id = random.randrange(1001)
+    maze_id = random.randrange(21)
     maze = read_maze_from_file('archive/rectangular_mazes_10x10/'+str(maze_id)+'.png')
     maze = convert_maze_to_list(maze)
     return render_template("amazement.html", maze=str(maze), maze_id=maze_id)
