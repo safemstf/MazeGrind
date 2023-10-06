@@ -12,12 +12,13 @@ def generate_grid_from_csv(filename, maze_number):
             if maze_idx == maze_number:
                 x, y = map(int, state_str.strip('"')[1:-1].split(", "))
                 grid[y][x] = action
+    grid[19][20] = 9
 
     return grid
 
 
 filename = "optimal_actions.csv"
-maze_number = 4
+maze_number = 22
 grid = generate_grid_from_csv(filename, maze_number)
 
 # Print the grid to terminal
