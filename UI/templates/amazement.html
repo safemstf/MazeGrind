@@ -46,7 +46,6 @@
         <script>
           // JavaScript code to generate and display the maze
           function displayMaze(maze) {
-            console.log("Displaying new maze")
             const mazeContainer = document.getElementById('maze-container');
             maze.forEach(row => {
               const rowContainer = document.createElement('div');
@@ -83,13 +82,8 @@
           }
           // Example maze represented as a 2D array {{ random_maze }}
           const maze = {{ maze }};
-          console.log("maze: " + maze)
           const maze_id = {{ maze_id }}
-          console.log("maze_id: " + maze_id)
 
-          // Call the function to display the maze
-          console.log("About to display maze")
-          // displayMaze(maze);
           // Define the URL to which you want to send the POST request
           const apiUrl = 'http://127.0.0.1:5000/start_game'; // Replace with your API URL
 
@@ -119,12 +113,10 @@
             })
             .then(data => {
               // Handle the response data here
-              console.log('Response data:', data['message']);
               // Split the data into rows
               const rows = data['message'].split('\n');
               // Parse each row into an array of numbers
               const maze = rows.map(row => row.split(' ').map(Number));
-              console.log("About to display solution")
               displayMaze(maze);
               displaySolution(maze);
             })
