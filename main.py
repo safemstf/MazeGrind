@@ -52,7 +52,7 @@ def maze_index_for_saving():
     return maze_number
 
 
-for maze_number in range(23, 1000):
+for maze_number in range(29, 1000):
     print("Maze Number: ", maze_number)
 
     maze = np.array(

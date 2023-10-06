@@ -86,7 +86,7 @@ class SarsaTableTraceModel(AbstractModel):
         # training starts here
         for episode in range(1, episodes + 1):
             # optimization: make sure to start training from all possible cells
-            quadrant_cycle_length = 25
+            quadrant_cycle_length = 35
             current_cycle = (episode - 1) // quadrant_cycle_length % 5
             # Get Quadrants
             quadrant1, quadrant2, quadrant3, quadrant4 = self.Divide_quadrants()
