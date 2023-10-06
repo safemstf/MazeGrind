@@ -46,13 +46,14 @@
         <script>
           // JavaScript code to generate and display the maze
           function displayMaze(maze) {
+            console.log("Displaying new maze")
             const mazeContainer = document.getElementById('maze-container');
             maze.forEach(row => {
               const rowContainer = document.createElement('div');
               rowContainer.className = 'row'
               row.forEach(pixelValue => {
                 const cell = document.createElement('div');
-                cell.className = pixelValue === 0 ? 'white-cell' : 'black-cell';
+                cell.className = pixelValue !== 5 ? 'white-cell' : 'black-cell';
                 rowContainer.appendChild(cell);
               });
               mazeContainer.appendChild(rowContainer);
@@ -61,31 +62,34 @@
           function displaySolution(maze) {
             const mazeContainer = document.getElementById('maze-container');
             maze.forEach(row => {
-                const rowContainer = document.createElement('div');
-                rowContainer.className = 'row'
-                row.forEach(pixelValue => {
-                    const cell = document.createElement('div');
-                    cell.className = pixelValue != 5 ? 'white-cell' : 'black-cell';
-                    if (pixelValue == 0) {
-                      cell.innerHTML = '&larr;';
-                    } else if (pixelValue == 1) {
-                      cell.innerHTML = '&rarr;';
-                    } else if (pixelValue == 2) {
-                      cell.innerHTML = '&uarr;';
-                    } else if (pixelValue == 3) {
-                      cell.innerHTML = '&darr;';
-                    }
-                    rowContainer.appendChild(cell);
-                });
-                mazeContainer.appendChild(rowContainer);
+              const rowContainer = document.createElement('div');
+              rowContainer.className = 'row'
+              row.forEach(pixelValue => {
+                const cell = document.createElement('div');
+                cell.className = pixelValue != 5 ? 'white-cell' : 'black-cell';
+                if (pixelValue == 0) {
+                  cell.innerHTML = '&larr;';
+                } else if (pixelValue == 1) {
+                  cell.innerHTML = '&rarr;';
+                } else if (pixelValue == 2) {
+                  cell.innerHTML = '&uarr;';
+                } else if (pixelValue == 3) {
+                  cell.innerHTML = '&darr;';
+                }
+                rowContainer.appendChild(cell);
+              });
+              mazeContainer.appendChild(rowContainer);
             });
-        }
+          }
           // Example maze represented as a 2D array {{ random_maze }}
           const maze = {{ maze }};
+          console.log("maze: " + maze)
           const maze_id = {{ maze_id }}
+          console.log("maze_id: " + maze_id)
 
           // Call the function to display the maze
-          displayMaze(maze);
+          console.log("About to display maze")
+          // displayMaze(maze);
           // Define the URL to which you want to send the POST request
           const apiUrl = 'http://127.0.0.1:5000/start_game'; // Replace with your API URL
 
@@ -105,26 +109,6 @@
             body: JSON.stringify(requestData), // Convert the data to JSON format
           };
 
-<<<<<<< HEAD
-// Send the POST request using the fetch API
-fetch(apiUrl, requestOptions)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json(); // Parse the response JSON, if needed
-    })
-    .then(data => {
-        // Handle the response data here
-        console.log('Response data:', data);
-        const maze = JSON.parse(data['message']);
-        displaySolution(maze);
-    })
-    .catch(error => {
-        // Handle errors here
-        console.error('Error:', error);
-    });
-=======
           // Send the POST request using the fetch API
           fetch(apiUrl, requestOptions)
             .then(response => {
@@ -135,13 +119,19 @@ fetch(apiUrl, requestOptions)
             })
             .then(data => {
               // Handle the response data here
-              console.log('Response data:', data);
+              console.log('Response data:', data['message']);
+              // Split the data into rows
+              const rows = data['message'].split('\n');
+              // Parse each row into an array of numbers
+              const maze = rows.map(row => row.split(' ').map(Number));
+              console.log("About to display solution")
+              displayMaze(maze);
+              displaySolution(maze);
             })
             .catch(error => {
               // Handle errors here
               console.error('Error:', error);
             });
->>>>>>> 910c5771dbbbb6e0ac653ed62761d28fb50b52b4
 
           //alert(maze_id);
         </script>

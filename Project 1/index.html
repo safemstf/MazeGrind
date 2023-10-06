@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Maze Display</title>
     <style>
@@ -11,6 +12,7 @@
             display: inline-block;
             border: 1px solid;
         }
+
         .black-cell {
             width: 20px;
             height: 20px;
@@ -18,6 +20,7 @@
             display: inline-block;
             border: 1px solid;
         }
+
         .red-cell {
             width: 20px;
             height: 20px;
@@ -25,6 +28,7 @@
             display: inline-block;
             border: 1px solid;
         }
+
         .row {
             display: block;
             padding: 0;
@@ -33,43 +37,44 @@
         }
     </style>
 </head>
+
 <body>
     <h1>Maze Display</h1>
     <div id="maze-container"></div>
 
-    <button id="display-button" class="maze__button">New Maze</button> 
+    <button id="display-button" class="maze__button">New Maze</button>
     <script>
         const refreshButton = document.getElementById('display-button');
-        refreshButton.addEventListener('click', function() {
+        refreshButton.addEventListener('click', function () {
             location.reload();
         });
-    <script>
+        <script>
         // JavaScript code to generate and display the maze
-        function displayMaze(maze) {
+            function displayMaze(maze) {
             const mazeContainer = document.getElementById('maze-container');
             
             maze.forEach(row => {
                 const rowContainer = document.createElement('div');
-                rowContainer.className = 'row'
+            rowContainer.className = 'row'
                 row.forEach(pixelValue => {
                     const cell = document.createElement('div');
-                    cell.className = pixelValue === 0 ? 'white-cell' : 'black-cell';
-                    rowContainer.appendChild(cell);
+            cell.className = pixelValue === 0 ? 'white-cell' : 'black-cell';
+            rowContainer.appendChild(cell);
                 });
-                mazeContainer.appendChild(rowContainer);
+            mazeContainer.appendChild(rowContainer);
             });
         }
 
-        // Example maze represented as a 2D array
-        const maze = [
+            // Example maze represented as a 2D array
+            const maze = [
             [0, 1, 0, 0, 1],
             [0, 0, 1, 0, 0],
             [1, 0, 0, 1, 0],
             [0, 1, 1, 0, 0]
-        ];
+            ];
 
-        // Call the function to display the maze
-        displayMaze(maze);
+            // Call the function to display the maze
+            displayMaze(maze);
     </script>
 </body>
 
