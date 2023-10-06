@@ -1,0 +1,164 @@
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+html, body {
+  height: 100%;
+}
+
+.body{
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  flex-grow: 10;
+}
+
+.header{
+  background-color: #323f43;
+  margin: 0 0 0;
+  padding: 0 auto;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-evenly;
+  font-size: 24px;
+  border-bottom: 5px solid black;
+  align-items: center;
+}
+
+.header__logo{
+  vertical-align: bottom;
+  display: inline-block;
+  text-align: center;
+  width: 80px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  cursor: pointer;
+}
+
+.header__gif{
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.mazesection{
+  padding-bottom: 40px;
+}
+
+.maze__header{
+  display: flex;
+  justify-content: center;
+}
+
+.white-cell {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  display: inline-block;
+  border: 1px solid;
+}
+.black-cell {
+  width: 20px;
+  height: 20px;
+  background-color: black;
+  display: inline-block;
+  border: 1px solid;
+}
+.red-cell {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  display: inline-block;
+  border: 1px solid;
+}
+.row {
+display: block;
+padding: 0;
+margin: 0;
+line-height: 0;
+}
+
+.maze{
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.maze__image{
+  padding: 18px;
+}
+
+.maze__buttons{
+  margin-top: 20px;
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.footer{
+  background-color: #323f43;
+  padding: 40px 0;
+  /* margin-top: 50px; */
+  border-top: 4px solid black;
+  color: white;
+  font-size: 12px;
+  /* position: absolute; */
+    width: 100%;
+    /* bottom: 0px; */
+  flex: 1;
+
+}
+
+.footer__content{
+  max-width: 640px;
+  margin: 0px auto;
+  display: flex;
+  flex-direction: row;
+}
+
+.footer__column{
+  display: flex;
+  flex-direction: column;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+.footer .left{
+  flex-grow: 2;
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+  cursor: pointer;
+}
+
+.footer .right{
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+}
+
+/* 
+notes and question for the group
+what should we add to this? 
+what do we want as the gif?
+what should the logo be? I have a person
+should we include the footer with links on how it works?
+cosmetic comments? I will try to do anything yall ask of me
+anyone here know anything about Flask? why in the hell is it so hard to install */
