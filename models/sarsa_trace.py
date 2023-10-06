@@ -71,7 +71,7 @@ class SarsaTableTraceModel(AbstractModel):
         exploration_rate = kwargs.get("exploration_rate", 0.9)
         exploration_decay = kwargs.get("exploration_decay", 0.999)  # % reduction per step = 100 - exploration decay
         learning_rate = kwargs.get("learning_rate", 0.999)
-        eligibility_decay = kwargs.get("eligibility_decay", 0.4)  # 0.80 = 20% reduction
+        eligibility_decay = kwargs.get("eligibility_decay", 0.9)  # 0.80 = 20% reduction
         episodes = max(kwargs.get("episodes", 1000), 1)
         check_convergence_every = kwargs.get("check_convergence_every", self.default_check_convergence_every)
 

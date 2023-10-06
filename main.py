@@ -51,8 +51,8 @@ maze_index = None
 def maze_index_for_saving():
     return maze_number
 
-# todo: fix full maze cell when looping from one maze to the next
-for maze_number in range(6, 1000):
+
+for maze_number in range(18, 1000):
     print("Maze Number: ", maze_number)
 
     maze = np.array(
@@ -125,7 +125,8 @@ for maze_number in range(6, 1000):
     if test == Test.DEEP_Q:
         game.render(Render.TRAINING)
         model = models.QReplayNetworkModel(game)
-        h, w, _, _ = model.train(discount=0.80, exploration_rate=0.10, episodes=maze.size * 10, max_memory=maze.size * 4,
+        h, w, _, _ = model.train(discount=0.80, exploration_rate=0.10, episodes=maze.size * 10,
+                                 max_memory=maze.size * 4,
                                  stop_at_convergence=True)
 
     # draw graphs showing development of win rate and cumulative rewards
