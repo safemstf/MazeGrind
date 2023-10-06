@@ -1,108 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazement!</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='mystyles.css')}}" type="text/css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazement!</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='mystyles.css')}}" type="text/css">
 </head>
 
 <body class="body">
-  
+
   <header class="header">
-    <img class="header__gif" src="{{url_for('static', filename='coin.gif')}}" alt="Coin GIF"/>
+    <img class="header__gif" src="{{url_for('static', filename='coin.gif')}}" alt="Coin GIF" />
     <div>
-      <img class="header__logo" src="{{url_for('static', filename='mazelogo.jpeg')}}" alt="Amazement Logo"/>
+      <img class="header__logo" src="{{url_for('static', filename='mazelogo.jpeg')}}" alt="Amazement Logo" />
     </div>
-    <img class="header__gif" src="{{url_for('static', filename='coin.gif')}}" alt="Coin GIF"/>
+    <img class="header__gif" src="{{url_for('static', filename='coin.gif')}}" alt="Coin GIF" />
   </header>
-  
+
   <main class="main">
     <section class="mazesection">
       <h1 class="maze__header">Try our AI Maze Generator!</h1>
       <div class="maze">
-      <div id="maze-container">
-      </div> 
+        <div id="maze-container">
+        </div>
         <!-- <img class="maze__image" src="mazeimg.png" alt="Maze IMG"/> -->
         <div id="maze-id-display"></div>
-        <button id="solve-button" class="maze__buttons">Need Help?</button> 
+        <button id="solve-button" class="maze__buttons">Need Help?</button>
         <script>
           const solveButton = document.getElementById('solve-button');
           solveButton.addEventListener('click', clearMaze)
           function clearMaze() {
             const mazeContainer = document.getElementById('maze-container');
             mazeContainer.innerHTML = ''; // Clear the content of the maze container
-        }
+          }
         </script>
-        <button id="display-button" class="maze__buttons">New Maze</button> 
-          <script>
-            const refreshButton = document.getElementById('display-button');
-            refreshButton.addEventListener('click', function() {
-              location.reload();
-            });
-          </script>
+        <button id="display-button" class="maze__buttons">New Maze</button>
+        <script>
+          const refreshButton = document.getElementById('display-button');
+          refreshButton.addEventListener('click', function () {
+            location.reload();
+          });
+        </script>
         <script>
           // JavaScript code to generate and display the maze
           function displayMaze(maze) {
-              const mazeContainer = document.getElementById('maze-container');
-              maze.forEach(row => {
-                  const rowContainer = document.createElement('div');
-                  rowContainer.className = 'row'
-                  row.forEach(pixelValue => {
-                      const cell = document.createElement('div');
-                      cell.className = pixelValue === 0 ? 'white-cell' : 'black-cell';
-                      rowContainer.appendChild(cell);
-                  });
-                  mazeContainer.appendChild(rowContainer);
-              });
-          }
-          function displaySolution(maze) {
             const mazeContainer = document.getElementById('maze-container');
             maze.forEach(row => {
-                const rowContainer = document.createElement('div');
-                rowContainer.className = 'row'
-                row.forEach(pixelValue => {
-                    const cell = document.createElement('div');
-                    cell.className = pixelValue != 5 ? 'white-cell' : 'black-cell';
-                    if (pixelValue == 0) {
-                      cell.innerHTML = '&larr;';
-                    } else if (pixelValue == 1) {
-                      cell.innerHTML = '&rarr;';
-                    } else if (pixelValue == 2) {
-                      cell.innerHTML = '&uarr;';
-                    } else if (pixelValue == 3) {
-                      cell.innerHTML = '&darr;';
-                    }
-                    rowContainer.appendChild(cell);
-                });
-                mazeContainer.appendChild(rowContainer);
+              const rowContainer = document.createElement('div');
+              rowContainer.className = 'row'
+              row.forEach(pixelValue => {
+                const cell = document.createElement('div');
+                cell.className = pixelValue === 0 ? 'white-cell' : 'black-cell';
+                rowContainer.appendChild(cell);
+              });
+              mazeContainer.appendChild(rowContainer);
             });
-        }
+          }
+          
           // Example maze represented as a 2D array {{ random_maze }}
           const maze = {{ maze }};
           const maze_id = {{ maze_id }}
-          
+
           // Call the function to display the maze
           displayMaze(maze);
           // Define the URL to which you want to send the POST request
-const apiUrl = 'http://127.0.0.1:5000/start_game'; // Replace with your API URL
+          const apiUrl = 'http://127.0.0.1:5000/start_game'; // Replace with your API URL
 
-// Create an object with the data you want to send in the request body
-const requestData = {
-    maze_number:maze_id
-    // Add more key-value pairs as needed
-};
+          // Create an object with the data you want to send in the request body
+          const requestData = {
+            maze_number: maze_id
+            // Add more key-value pairs as needed
+          };
 
-// Define the request options, including the method and headers
-const requestOptions = {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json', // Set the content type as needed
-        // Add any other headers as needed
-    },
-    body: JSON.stringify(requestData), // Convert the data to JSON format
-};
+          // Define the request options, including the method and headers
+          const requestOptions = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json', // Set the content type as needed
+              // Add any other headers as needed
+            },
+            body: JSON.stringify(requestData), // Convert the data to JSON format
+          };
 
 // Send the POST request using the fetch API
 fetch(apiUrl, requestOptions)
@@ -115,8 +95,6 @@ fetch(apiUrl, requestOptions)
     .then(data => {
         // Handle the response data here
         console.log('Response data:', data);
-        const maze = JSON.parse(data['message']);
-        displaySolution(maze);
     })
     .catch(error => {
         // Handle errors here
@@ -124,7 +102,7 @@ fetch(apiUrl, requestOptions)
     });
 
           //alert(maze_id);
-      </script>  
+        </script>
       </div>
     </section>
   </main>
@@ -135,13 +113,14 @@ fetch(apiUrl, requestOptions)
         <a class="footer__item"> Made by MazeGrind</a><br>
         <a class="footer__item"> Check out our other projects here!</a>
       </section>
-        <div class="footer__column">
-          <a class="footer__item"> </a><br>
-          <a class="footer__item"> How it was made</a>
-        </div>
+      <div class="footer__column">
+        <a class="footer__item"> </a><br>
+        <a class="footer__item"> How it was made</a>
+      </div>
       </section>
     </div>
   </footer>
 
 </body>
+
 </html>
