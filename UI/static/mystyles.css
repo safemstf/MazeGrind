@@ -138,7 +138,9 @@ line-height: 0;
   margin-left: 40px;
 }
 
-
+.arrow-large {
+  font-size: 24px;
+}
 
 .maze__image{
   padding: 18px;

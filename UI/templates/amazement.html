@@ -29,7 +29,6 @@
         </div>
         <!-- <img class="maze__image" src="mazeimg.png" alt="Maze IMG"/> -->
         <div id="maze-id-display"></div>
-          <button id="solve-button" class="maze__buttons">Need Help?</button>
           <script>
             const solveButton = document.getElementById('solve-button');
             solveButton.addEventListener('click', clearMaze)
@@ -60,28 +59,33 @@
                 mazeContainer.appendChild(rowContainer);
               });
             }          
-          function displaySolution(maze) {
-            const mazeContainer = document.getElementById('maze-two');
-            maze.forEach(row => {
-              const rowContainer = document.createElement('div');
-              rowContainer.className = 'row'
-              row.forEach(pixelValue => {
-                const cell = document.createElement('div');
-                cell.className = pixelValue != 5 ? 'white-cell' : 'black-cell';
-                if (pixelValue == 0) {
-                  cell.innerHTML = '&larr;';
-                } else if (pixelValue == 1) {
-                  cell.innerHTML = '&rarr;';
-                } else if (pixelValue == 2) {
-                  cell.innerHTML = '&uarr;';
-                } else if (pixelValue == 3) {
-                  cell.innerHTML = '&darr;';
-                }
-                rowContainer.appendChild(cell);
+            function displaySolution(maze) {
+              const mazeContainer = document.getElementById('maze-two');
+              maze.forEach(row => {
+                const rowContainer = document.createElement('div');
+                rowContainer.className = 'row';
+                row.forEach(pixelValue => {
+                  const cell = document.createElement('div');
+                  cell.className = pixelValue != 5 ? 'white-cell' : 'black-cell';
+                  if (pixelValue == 0) {
+                    cell.innerHTML = '&larr;';
+                  } else if (pixelValue == 1) {
+                    cell.innerHTML = '&rarr;';
+                  } else if (pixelValue == 2) {
+                    cell.innerHTML = '&uarr;';
+                  } else if (pixelValue == 3) {
+                    cell.innerHTML = '&darr;';
+                  }
+                  
+                  // Add a CSS class to adjust the font size
+                  cell.classList.add('arrow-large');
+
+                  rowContainer.appendChild(cell);
+                });
+                mazeContainer.appendChild(rowContainer);
               });
-              mazeContainer.appendChild(rowContainer);
-            });
-          }
+            }
+
           // Example maze represented as a 2D array {{ random_maze }}
           const maze = {{ maze }};
           const maze_id = {{ maze_id }}
