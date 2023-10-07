@@ -20,6 +20,7 @@ html, body {
   align-items: center;
   justify-content: center; 
   flex-grow: 10;
+  
 }
 
 .header{
@@ -100,6 +101,39 @@ line-height: 0;
   align-items: center;
   justify-content: center;
 }
+
+.maze-container {
+  display: flex;
+  justify-content: space-between; /* Add space between the two mazes */
+  align-items: center; /* Vertically center the mazes */
+  width: 100%; /* Ensure the container spans the full width */
+}
+
+#maze-one, #maze-two {
+  width: 100%; /* Adjust the width of each maze as needed */
+  border: orange 10px solid; /* Add a border to each maze */
+  /* The rest of your individual maze styles */
+}
+
+#maze-one {
+  /* Your existing styles for maze-one */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-right: 40px;
+}
+
+#maze-two {
+  /* Your existing styles for maze-two */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  margin-left: 40px;
+}
+
+
 
 .maze__image{
   padding: 18px;

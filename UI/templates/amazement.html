@@ -23,43 +23,45 @@
     <section class="mazesection">
       <h1 class="maze__header">Try our AI Maze Generator!</h1>
       <div class="maze">
-        <div id="maze-container">
+        <div class="maze-container">
+          <div id="maze-one"></div>
+          <div id="maze-two"></div>
         </div>
         <!-- <img class="maze__image" src="mazeimg.png" alt="Maze IMG"/> -->
         <div id="maze-id-display"></div>
-        <button id="solve-button" class="maze__buttons">Need Help?</button>
-        <script>
-          const solveButton = document.getElementById('solve-button');
-          solveButton.addEventListener('click', clearMaze)
-          function clearMaze() {
-            const mazeContainer = document.getElementById('maze-container');
-            mazeContainer.innerHTML = ''; // Clear the content of the maze container
-          }
-        </script>
-        <button id="display-button" class="maze__buttons">New Maze</button>
-        <script>
-          const refreshButton = document.getElementById('display-button');
-          refreshButton.addEventListener('click', function () {
-            location.reload();
-          });
-        </script>
-        <script>
-          // JavaScript code to generate and display the maze
-          function displayMaze(maze) {
-            const mazeContainer = document.getElementById('maze-container');
-            maze.forEach(row => {
-              const rowContainer = document.createElement('div');
-              rowContainer.className = 'row'
-              row.forEach(pixelValue => {
-                const cell = document.createElement('div');
-                cell.className = pixelValue !== 5 ? 'white-cell' : 'black-cell';
-                rowContainer.appendChild(cell);
-              });
-              mazeContainer.appendChild(rowContainer);
+          <button id="solve-button" class="maze__buttons">Need Help?</button>
+          <script>
+            const solveButton = document.getElementById('solve-button');
+            solveButton.addEventListener('click', clearMaze)
+            function clearMaze() {
+              const mazeContainer = document.getElementById('maze-one');
+              mazeContainer.innerHTML = ''; // Clear the content of the maze container
+            }
+          </script>
+          <button id="display-button" class="maze__buttons">New Maze</button>
+          <script>
+            const refreshButton = document.getElementById('display-button');
+            refreshButton.addEventListener('click', function () {
+              location.reload();
             });
-          }
+          </script>
+          <script>
+            // JavaScript code to generate and display the maze
+            function displayMaze(maze) {
+              const mazeContainer = document.getElementById('maze-one');
+              maze.forEach(row => {
+                const rowContainer = document.createElement('div');
+                rowContainer.className = 'row'
+                row.forEach(pixelValue => {
+                  const cell = document.createElement('div');
+                  cell.className = pixelValue !== 5 ? 'white-cell' : 'black-cell';
+                  rowContainer.appendChild(cell);
+                });
+                mazeContainer.appendChild(rowContainer);
+              });
+            }          
           function displaySolution(maze) {
-            const mazeContainer = document.getElementById('maze-container');
+            const mazeContainer = document.getElementById('maze-two');
             maze.forEach(row => {
               const rowContainer = document.createElement('div');
               rowContainer.className = 'row'
